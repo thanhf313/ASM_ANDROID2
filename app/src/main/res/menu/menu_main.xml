@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/itQlsp"
+    android:icon="@drawable/baseline_approval_24"
+    android:title="Quản lý sản phẩm "/>
+    <item
+        android:id="@+id/itGioiThieu"
+        android:icon="@drawable/baseline_all_inclusive_24"
+        android:title="Giới Thiệu" />
+    <group
+        android:checkableBehavior="single">
+        <item
+            android:title="Khác">
+            <menu>
+                <item
+                    android:id="@+id/itSetting"
+                    android:icon="@drawable/baseline_settings_24"
+                    android:title="Setting"/>
+                <item
+                    android:id="@+id/itLogout"
+                    android:icon="@drawable/baseline_logout_24"
+                    android:title="Logout"/>
+            </menu>
+        </item>
+    </group>
+</menu>
