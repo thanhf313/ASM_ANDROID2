@@ -1,16 +1,26 @@
 package com.example.asmandroid2.Screen;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.asmandroid2.R;
+import com.example.asmandroid2.dao.SanPhamDao;
+import com.example.asmandroid2.database.SanPhamAdapter;
+import com.example.asmandroid2.model.SanPham;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +53,29 @@ public class MainActivity extends AppCompatActivity {
         drawerToggle.syncState();
         // gắt kết DrawerToggle vs DrawerLayout
         drawerLayout.addDrawerListener(drawerToggle);
+
+        // hiện thị dữ liệu
+        SanPhamDao sanPhamDao = new SanPhamDao(MainActivity.this);
+        ArrayList<SanPham> list = sanPhamDao.getListSP();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MainActivity.this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        // adapter đỗ dl
+        SanPhamAdapter sanPhamAdapter = new SanPhamAdapter(MainActivity.this,list,sanPhamDao);
+        recyclerView.setAdapter(sanPhamAdapter);
+
+        // set up sk vào item tương ứng trg navigation
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.itLogout){
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    Toast.makeText(MainActivity.this, "Thoát thành công", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+        });
+
     }
-
-
 }

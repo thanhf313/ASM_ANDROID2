@@ -15,13 +15,25 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String qSP = "create table NguoiDung(tenDN text primary key, matKhau text , hoTen text )";
+        String qND = "create table NguoiDung(tenDN text primary key, matKhau text , hoTen text )";
+        db.execSQL(qND);
+
+        String qSP = "create table ProDucts(maSP integer primary key autoincrement,tenSP text,giaSP integer, slSP integer)";
         db.execSQL(qSP);
+        // nạp dự liệu table products
+        String data = "insert into ProDucts values (1,'Bánh quy bơ Lu Pháp',45000,10)," +
+                "(2,'Snack mực lăn muối ớt',8000,52)," +
+                "(3,'Snack khoai tây',12000,38)," +
+                "(4,'Bánh gạo One One',30000,11)," +
+                "(5,'Kẹo sữa sô cô la',25000,30)";
+        db.execSQL(data);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        // xóa những bảng cũ
+        db.execSQL("drop table if exists NguoiDung");
+        db.execSQL("drop table if exists ProDucts");
     }
 
     // hàm register
