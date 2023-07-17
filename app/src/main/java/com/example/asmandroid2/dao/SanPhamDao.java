@@ -10,6 +10,7 @@ import com.example.asmandroid2.adapter.DbHelper;
 import com.example.asmandroid2.model.SanPham;
 
 import java.util.ArrayList;
+// MUỐN TRUY XUẤT THÌ PHẢI CẤP BIẾN MÔI TRƯỜNG
 
 public class SanPhamDao {
     private final DbHelper dbHelper;
@@ -30,7 +31,10 @@ public class SanPhamDao {
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst(); // đưa con trỏ về cị trí đầu tiên
                 do {
-                    list.add(new SanPham(cursor.getInt(0), cursor.getString(1), cursor.getInt(2), cursor.getInt(3)));
+                    list.add(new SanPham(cursor.getInt(0),
+                            cursor.getString(1),
+                            cursor.getInt(2),
+                            cursor.getInt(3)));
                 } while (cursor.moveToNext());
                 database.setTransactionSuccessful(); // database đã thành công
             }

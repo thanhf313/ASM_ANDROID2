@@ -34,7 +34,6 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHodl
     public SanPhamAdapter.ViewHodler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = ((Activity) context).getLayoutInflater();
         View view = inflater.inflate(R.layout.layout_item_recycler,parent,false);
-
         return new ViewHodler(view);
     }
 
@@ -64,7 +63,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHodl
             tvGiaSP = itemView.findViewById(R.id.tvGiaSP);
             tvSLSP = itemView.findViewById(R.id.tvSLSP);
             imgViews = itemView.findViewById(R.id.imgView);
-            icAdd = imgViews.findViewById(R.id.imgIC);
+            icAdd = itemView.findViewById(R.id.imgIC);
             imgDelete = itemView.findViewById(R.id.imgDelete);
             imgEdit = itemView.findViewById(R.id.imgEdit);
         }
