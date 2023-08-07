@@ -20,6 +20,7 @@ import com.example.asmandroid2.Screen.RegisterActivity;
 import com.example.asmandroid2.dao.SanPhamDao;
 import com.example.asmandroid2.model.SanPham;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,15 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHodl
         holder.tvTenSP.setText(list.get(position).getTenSP());
         holder.tvGiaSP.setText(String.valueOf(list.get(position).getGiaSP())+ "VNĐ -");
         holder.tvSLSP.setText("SL: "+ String.valueOf(list.get(position).getSlSP()));
-
+        // lấy ảnh từ drawable đồ vào
+        int imgID = ((Activity) context).getResources().getIdentifier(
+                list.get(position).getAvatar(),"drawable",
+                ((Activity) context).getPackageName());
+        holder.imgViews.setImageResource(imgID);
+        // lấy ảnh từ internet
+        if (list.get(position).getAvatar().startsWith("http://") || list.get(position).getAvatar().startsWith("https://")){
+            Picasso.get().load(list.get(position).getAvatar()).into(holder.imgViews);
+        }
         // bắt sự kiện delete
         holder.imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,6 +141,7 @@ public class SanPhamAdapter extends RecyclerView.Adapter<SanPhamAdapter.ViewHodl
                     Toast.makeText(context, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                     list.clear();
                     list = sanPhamDao.getListSP();
+                    notifyDataSetChanged();
                     // đóng dialog
                     dialog.dismiss();
                 }else {

@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="12dp"
     android:orientation="vertical">
     <ImageView
         android:layout_width="200dp"
@@ -72,4 +73,28 @@
     android:textSize="20dp"
     android:textStyle="bold"
     android:textAllCaps="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/edtURL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="Enter your url to load image" />
+        <Button
+            android:id="@+id/btnInsertImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="insert image"
+            android:textAllCaps="true"
+            android:layout_below="@id/edtURL"/>
+        <ImageView
+            android:id="@+id/imgAddHinh"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:src="@drawable/hinh1"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/edtURL"/>
+    </RelativeLayout>
 </LinearLayout>

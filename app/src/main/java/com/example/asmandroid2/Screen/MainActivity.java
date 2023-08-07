@@ -9,12 +9,17 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -25,9 +30,14 @@ import com.example.asmandroid2.model.SanPham;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
+    Handler mainHandler = new Handler();
+    ProgressDialog progressDialog;
+    ImageView imgAddHinh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +106,19 @@ public class MainActivity extends AppCompatActivity {
                 TextInputEditText edtPriceSP = view.findViewById(R.id.edtPriceSP);
                 TextInputEditText edtQuantitySP = view.findViewById(R.id.edtQuantitySP);
 
+                EditText edtURL = view.findViewById(R.id.edtURL);
+                Button btnInsertImage = view.findViewById(R.id.btnInsertImage);
+                imgAddHinh = view.findViewById(R.id.imgAddHinh);
+
+                // bắt sk cho btnInsertImage
+                btnInsertImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String url = edtURL.getText().toString();
+                        new FetchImage(url).start();
+                    }
+                });
+
                 Button btnAdd = view.findViewById(R.id.btnAddSP);
                 btnAdd.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -103,23 +126,25 @@ public class MainActivity extends AppCompatActivity {
                         String name = edtNameSP.getText().toString();
                         String price = edtPriceSP.getText().toString();
                         String quantity = edtQuantitySP.getText().toString();
+                        String url = edtURL.getText().toString();
 
                         // kiểm tra việc nhập
-                        if(name.isEmpty() || price.isEmpty() || quantity.isEmpty()){
+                        if (name.isEmpty() || price.isEmpty() || quantity.isEmpty()) {
                             Toast.makeText(MainActivity.this, "Vui lòng nhập dữ liệu", Toast.LENGTH_SHORT).show();
-                        }else {
+                        } else {
                             SanPham sanPham = new SanPham();
                             sanPham.setTenSP(name);
                             sanPham.setGiaSP(Integer.parseInt(price));
                             sanPham.setSlSP(Integer.parseInt(quantity));
+                            sanPham.setAvatar(url);
 
                             boolean check = sanPhamDao.addSP(sanPham);
-                            if (check){
+                            if (check) {
                                 Toast.makeText(MainActivity.this, "Thêm thành công", Toast.LENGTH_SHORT).show();
                                 list.clear();
                                 list.addAll(sanPhamDao.getListSP());
                                 sanPhamAdapter.notifyDataSetChanged();
-                            }else {
+                            } else {
                                 Toast.makeText(MainActivity.this, "Thêm thất bại ", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -128,5 +153,48 @@ public class MainActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
+    }
+
+    public class FetchImage extends Thread {
+        // thread ( luôn = dữ liệu): đc cung cấp bỏi androi - thực thi công việc (  vào trước xử lý trước )..
+        // threadPool ngược lại thread:
+        String URL; // sử lý link hình ảnh
+        Bitmap bitmap;
+
+        FetchImage(String URL) {
+            this.URL = URL;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    // hiện thị dailog
+                    progressDialog = new ProgressDialog(MainActivity.this);
+                    progressDialog.setMessage("Đang tải hình xuống...");
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                }
+            });
+            InputStream inputStream = null; //đọc dữ liệu từ file hoặc nhận dữ liệu qua mạng.
+            try {
+                inputStream = new URL(URL).openStream();
+                bitmap = BitmapFactory.decodeStream(inputStream); // xử lý độ họa,hình ảnh
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // xử lý hình ảnh trên dailog
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (progressDialog.isShowing()) {
+                        progressDialog.dismiss();
+                        imgAddHinh.setImageBitmap(bitmap);
+                    }
+                }
+            });
+        }
     }
 }

@@ -4,16 +4,19 @@ public class SanPham {
     private int maSP;
     private String tenSP;
     private int giaSP, slSP;
+    private  String avatar;
 
-    public SanPham(int maSP, String tenSP, int giaSP, int slSP) {
+
+    public SanPham(int maSP, String tenSP, int giaSP, int slSP, String avatar) {
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.giaSP = giaSP;
         this.slSP = slSP;
+        this.avatar = avatar;
     }
 
     public SanPham() {
-    } // HÀM TRỐNG
+    }
 
     public int getMaSP() {
         return maSP;
@@ -45,5 +48,13 @@ public class SanPham {
 
     public void setSlSP(int slSP) {
         this.slSP = slSP;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

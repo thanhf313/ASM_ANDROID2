@@ -34,7 +34,8 @@ public class SanPhamDao {
                     list.add(new SanPham(cursor.getInt(0),
                             cursor.getString(1),
                             cursor.getInt(2),
-                            cursor.getInt(3)));
+                            cursor.getInt(3),
+                            cursor.getString(4)));
                 } while (cursor.moveToNext());
                 database.setTransactionSuccessful(); // database đã thành công
             }
@@ -53,6 +54,7 @@ public class SanPhamDao {
         contentValues.put("tenSP", sanPham.getTenSP());
         contentValues.put("giaSP", String.valueOf(sanPham.getGiaSP()));
         contentValues.put("slSP", String.valueOf(sanPham.getSlSP()));
+        contentValues.put("avatar",sanPham.getAvatar());
 
         long check = database.insert("ProDucts", null, contentValues);
         return check != -1;
@@ -72,6 +74,7 @@ public class SanPhamDao {
         contentValues.put("tenSP", sanPham.getTenSP());
         contentValues.put("giaSP", String.valueOf(sanPham.getGiaSP()));
         contentValues.put("SLSP", String.valueOf(sanPham.getSlSP()));
+        contentValues.put("avatar",sanPham.getAvatar());
 
         long check = database.update("ProDucts", contentValues, "maSP=?",
                 new String[]{String.valueOf(sanPham.getMaSP())});
